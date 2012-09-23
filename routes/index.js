@@ -79,8 +79,8 @@ module.exports = function (app) {
 
 
 
-    //process.env.AZURE_STORAGE_ACCOUNT = 'darraghruby'
-    //process.env.AZURE_STORAGE_ACCESS_KEY = 'BMPMD/hpYVqdYOIozwcxx2c/nrG1W1ynwkBW4SM4vmFwPACu2ktmLwZjw7rQ/eqTovPOORom7vxymUcev9LJUQ=='
+    process.env.AZURE_STORAGE_ACCOUNT = 'darraghruby'
+    process.env.AZURE_STORAGE_ACCESS_KEY = 'BMPMD/hpYVqdYOIozwcxx2c/nrG1W1ynwkBW4SM4vmFwPACu2ktmLwZjw7rQ/eqTovPOORom7vxymUcev9LJUQ=='
 
 
 
