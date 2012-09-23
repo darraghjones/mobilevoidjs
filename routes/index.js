@@ -11,7 +11,11 @@ module.exports = function (app) {
     var async = require('async')
     var azure = require('azure')
 
-    // about page
+    app.get('/env', function (req, res) {
+        res.send(util.inspect(process.env, false, null));
+    });
+
+
     app.get('/play', function (req, res) {
         res.send(util.format("<audio src='%s' controls='false' autoplay='true' />", req.query['url']));
     });
@@ -74,8 +78,10 @@ module.exports = function (app) {
 
 
 
+
     process.env.AZURE_STORAGE_ACCOUNT = 'darraghruby'
     process.env.AZURE_STORAGE_ACCESS_KEY = 'BMPMD/hpYVqdYOIozwcxx2c/nrG1W1ynwkBW4SM4vmFwPACu2ktmLwZjw7rQ/eqTovPOORom7vxymUcev9LJUQ=='
+
 
 
     function getUrl(url, callback) {
