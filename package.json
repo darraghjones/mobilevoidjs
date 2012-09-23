@@ -3,27 +3,27 @@
   "version": "0.1.0",
   "author": "The WebMatrix Team <webmatrix@microsoft.com>",
   "description": "A simple boilerplate for building node applications on Windows Azure (or wherever)",
-  "contributors": [ 
+  "contributors": [
     {
       "name": "Justin Beckwith",
       "email": "justbe@microsoft.com"
-    } 
-  ],  
-  "main": "./server.js",  
+    }
+  ],
+  "main": "./server.js",
   "keywords": [
     "azure",
     "boilerplate",
     "express"
   ],
-  "dependencies" : {
+  "dependencies": {
     "express": "2.5.7",
     "jade": ">= 0.0.1",
     "htmlparser": "",
     "soupselect": "",
     "crypto": "",
     "async": "",
-    "azure": ""
-
+    "azure": "",
+    "mongoose": "~3.1.2"
   },
   "noAnalyze": true,
   "license": "Apache",

@@ -79,8 +79,8 @@ module.exports = function (app) {
 
 
 
-    process.env.AZURE_STORAGE_ACCOUNT = 'darraghruby'
-    process.env.AZURE_STORAGE_ACCESS_KEY = 'BMPMD/hpYVqdYOIozwcxx2c/nrG1W1ynwkBW4SM4vmFwPACu2ktmLwZjw7rQ/eqTovPOORom7vxymUcev9LJUQ=='
+    //process.env.AZURE_STORAGE_ACCOUNT = 'darraghruby'
+    //process.env.AZURE_STORAGE_ACCESS_KEY = 'BMPMD/hpYVqdYOIozwcxx2c/nrG1W1ynwkBW4SM4vmFwPACu2ktmLwZjw7rQ/eqTovPOORom7vxymUcev9LJUQ=='
 
 
 
@@ -88,11 +88,19 @@ module.exports = function (app) {
         var md5 = crypto.createHash('md5');
         var hash = md5.update(url).digest('base64');
 
-        var blobService = azure.createBlobService();
+        var blobService;
+        try {
+            blobService = azure.createBlobService();
+        } 
+        catch (err) {
+            blobService = null;
+        }
+
         if (blobService) {
             blobService.createContainerIfNotExists('cache', function(err, results) {
                 blobService.getBlobToText('cache', hash, function(err, results) {
                     if (results) {
+                        console.log("blob storage cache hit: " + hash);
                         callback(results);
                     }
                     else {
@@ -109,7 +117,7 @@ module.exports = function (app) {
             var filename = 'cache/' + hash;
             fs.exists(filename, function (exists) {
                 if (exists) {
-                    console.log("cache hit: " + filename);
+                    console.log("filesystem cache hit: " + filename);
                     fs.readFile(filename, null, function (err, data) {
                         callback(data)
                     });
@@ -160,11 +168,9 @@ module.exports = function (app) {
             var dom = createDom(data)
             var artist = {};
             var md = select(dom, "div.artistInfo div.name")[0].children[0].children[0];
-            i(md);
             artist.name = md.raw;
             artist.albums = [];            
             select(dom, 'div.contentWrapper div.item').forEach(function(el) {
-                //i(el)
                 var album = {}
                 album.name = getText(el, 'div.name a');
                 album.url = getHref(el, 'div.name a');
@@ -187,8 +193,7 @@ module.exports = function (app) {
                 if (header) {
                     header = false;                    
                 }
-                else {      
-                    i(el);              
+                else {               
                     var song = {}
                     song.name = getText(el, 'td.name');
                     song.url = getFlashPreviewUrl(el, 'td.preview a');
@@ -237,11 +242,7 @@ module.exports = function (app) {
             return select(el, sel)[0].children[0].raw;
         }            
         catch(err){
-            //i(sel);
-            i(el);              
-            //i(select(el, sel))
-            //i(select(el, sel)[0])
-            //i(err);
+            //console.log(err)
             return "Various Artists"
         }
     }       
@@ -252,7 +253,7 @@ module.exports = function (app) {
             return select(el, sel)[0].attribs.href
         }            
         catch(err){
-            i(err);
+            //console.log(err)
             return null;
         }
     }
@@ -262,7 +263,7 @@ module.exports = function (app) {
             return select(el, sel)[0].attribs.flashPreviewUrl
         }            
         catch(err){
-            i(err);
+            //console.log(err)
             return null;
         }
     }
@@ -273,7 +274,7 @@ module.exports = function (app) {
             return select(el, sel)[0].attribs.src
         }            
         catch(err){
-            i(err);
+            //console.log(err)
             return null;
         }
     }
@@ -302,6 +303,6 @@ module.exports = function (app) {
 
 
     function i(o) {
-        util.puts(util.inspect(o, false, null));
+        console.log(o);
     }
 }
