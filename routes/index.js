@@ -12,7 +12,7 @@ module.exports = function (app) {
     var azure = require('azure')
 
     app.get('/env', function (req, res) {
-        res.send(util.inspect(process.env, false, null));
+        res.send(util.inspect(process.env, false, null      ));
     });
 
 
@@ -115,7 +115,6 @@ module.exports = function (app) {
                     });
                 }
                 else {
-                    console.log("downloading " + url)
                     downloadUrl(url, function (data) {
                         fs.writeFile(filename, data, function() {
                             callback(data);
@@ -134,6 +133,8 @@ module.exports = function (app) {
             path: url,
             method: 'GET'
         };
+        console.log("downloading " + url)
+                    
         var req = http.request(options, function (res) {
             var data = '';
             res.on('data', function (chunk) {
