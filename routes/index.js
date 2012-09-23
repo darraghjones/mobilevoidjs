@@ -9,6 +9,7 @@ module.exports = function (app) {
     var fs = require('fs')
     var crypto = require('crypto')
     var async = require('async')
+    var azure = require('azure')
 
     // about page
     app.get('/play', function (req, res) {
@@ -73,27 +74,52 @@ module.exports = function (app) {
 
 
 
+    process.env.AZURE_STORAGE_ACCOUNT = 'darraghruby'
+    process.env.AZURE_STORAGE_ACCESS_KEY = 'BMPMD/hpYVqdYOIozwcxx2c/nrG1W1ynwkBW4SM4vmFwPACu2ktmLwZjw7rQ/eqTovPOORom7vxymUcev9LJUQ=='
+
+
     function getUrl(url, callback) {
         var md5 = crypto.createHash('md5');
-        md5.update(url)
-        var filename = 'cache/' + md5.digest('base64');
-        fs.exists(filename, function (exists) {
-            if (exists) {
-                console.log("cache hit: " + filename);
-                fs.readFile(filename, null, function (err, data) {
-                    callback(data)
-                });
-            }
-            else {
-                console.log("downloading " + url)
-                downloadUrl(url, function (data) {
-                    fs.writeFile(filename, data, function() {
-                        callback(data);
-                    });                    
-                });
-            }
-        });
+        var hash = md5.update(url).digest('base64');
+
+        var blobService = azure.createBlobService();
+        if (blobService) {
+            blobService.createContainerIfNotExists('cache', function(err, results) {
+                blobService.getBlobToText('cache', hash, function(err, results) {
+                    if (results) {
+                        callback(results);
+                    }
+                    else {
+                        downloadUrl(url, function (data) {
+                            blobService.createBlockBlobFromText('cache', hash, data, function(err, results) {
+                                callback(data);
+                            });
+                        });                        
+                    }
+                });                
+            });
+        }
+        else {
+            var filename = 'cache/' + hash;
+            fs.exists(filename, function (exists) {
+                if (exists) {
+                    console.log("cache hit: " + filename);
+                    fs.readFile(filename, null, function (err, data) {
+                        callback(data)
+                    });
+                }
+                else {
+                    console.log("downloading " + url)
+                    downloadUrl(url, function (data) {
+                        fs.writeFile(filename, data, function() {
+                            callback(data);
+                        });                    
+                    });
+                }
+            });    
+        }        
     }
+
 
     function downloadUrl(url, callback) {
         var options = {
@@ -262,7 +288,6 @@ module.exports = function (app) {
 
                 songs.push({ artistName: artistName, artistUrl: artistUrl, albumUrl: url, albumName: name, thumbnail: 'http://www.legalsounds.com' + imageUrl });
             });
-            i(songs);
             callback(songs)
         });
     }

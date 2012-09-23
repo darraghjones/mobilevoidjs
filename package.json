@@ -21,7 +21,8 @@
     "htmlparser": "",
     "soupselect": "",
     "crypto": "",
-    "async": ""
+    "async": "",
+    "azure": ""
 
   },
   "noAnalyze": true,
