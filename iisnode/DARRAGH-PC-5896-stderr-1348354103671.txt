@@ -1,0 +1,17 @@
+
+failed to locate view "music", tried:
+  - C:\Users\Darragh\Documents\My Web Sites\Express Site/views/music.jade
+  - C:\Users\Darragh\Documents\My Web Sites\Express Site/views/music/index.jade
+  - C:\Users\Darragh\Documents\My Web Sites\Express Site/views/../music/index.jade
+
+Error: failed to locate view "music"
+    at Function.exports.compile (C:\Users\Darragh\Documents\My Web Sites\Express Site\node_modules\express\lib\view.js:61:15)
+    at ServerResponse.res._render (C:\Users\Darragh\Documents\My Web Sites\Express Site\node_modules\express\lib\view.js:417:18)
+    at ServerResponse.res.render (C:\Users\Darragh\Documents\My Web Sites\Express Site\node_modules\express\lib\view.js:318:17)
+    at module.exports.app.get.res.render.artist (C:\Users\Darragh\Documents\My Web Sites\Express Site\routes\index.js:27:17)
+    at C:\Users\Darragh\Documents\My Web Sites\Express Site\routes\index.js:197:13
+    at module.exports.options.host (C:\Users\Darragh\Documents\My Web Sites\Express Site\routes\index.js:90:21)
+    at IncomingMessage.<anonymous> (C:\Users\Darragh\Documents\My Web Sites\Express Site\routes\index.js:109:17)
+    at IncomingMessage.EventEmitter.emit (events.js:115:20)
+    at IncomingMessage._emitEnd (http.js:366:10)
+    at HTTPParser.parserOnMessageComplete [as onMessageComplete] (http.js:149:23)
