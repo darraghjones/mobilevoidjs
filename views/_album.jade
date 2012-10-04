@@ -9,9 +9,10 @@
 
 -else if (song.albumName)
     div
-        a(href=song.artistUrl)=song.artistName
-        |
         a(href=song.albumUrl)=song.albumName
+        span by
+        a(href=song.artistUrl)=song.artistName
+        
 -else
     div
         a(href=song.artistUrl)=song.artistName
