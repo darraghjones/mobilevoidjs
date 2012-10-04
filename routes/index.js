@@ -17,7 +17,7 @@ module.exports = function (app) {
 
 
     app.get('/play', function (req, res) {
-        res.send(util.format("<audio src='%s' controls='false' autoplay='true' />", req.query['url']));
+        res.render('play', {url: req.query['url'], layout: false});
     });
 
    
@@ -29,7 +29,7 @@ module.exports = function (app) {
 
         
     app.get(/^\/(mostDownloaded|hotReleases|justAdded)$/i, function (req, res) {        
-        getSongs(req.url, function(songs) {
+        getAlbums(req.url, function(songs) {
            res.render('list', { songs: songs });
         });
     });
@@ -56,12 +56,12 @@ module.exports = function (app) {
         async.parallel(
         {
             artists: function(callback){
-                getSongs('/mostDownloaded?period=Week&entity=Artist', function(results) {
+                getArtists('/mostDownloaded?period=Week&entity=Artist', function(results) {
                     callback(null, results)
                 });
             },
             albums: function(callback){
-                getSongs('/mostDownloaded?period=Week&entity=Album', function(results) {
+                getAlbums('/mostDownloaded?period=Week&entity=Album', function(results) {
                     callback(null, results)
                 });
             },
@@ -237,13 +237,13 @@ module.exports = function (app) {
         });
     }
 
-    function getText(el, sel){  
+    function getText(el, sel, defaultText){  
         try {
             return select(el, sel)[0].children[0].raw;
         }            
         catch(err){
             //console.log(err)
-            return "Various Artists"
+            return defaultText
         }
     }       
        
@@ -278,8 +278,8 @@ module.exports = function (app) {
             return null;
         }
     }
-        
-    function getSongs(url, callback) {
+    
+    function getAlbums(url, callback) {
         getUrl(url, function (data) {
             var dom = createDom(data)
             var md = select(dom, "div.contentWrapper div.item");
@@ -289,7 +289,7 @@ module.exports = function (app) {
                 var name = getText(element, "div.name a");
                 var url = getHref(element, "div.name a");
 
-                var artistName = getText(element, "div.artist a");
+                var artistName = getText(element, "div.artist a", "Various Artists");
                 var artistUrl = getHref(element, "div.artist a");
 
                 var imageUrl = getImageSrc(element, "div.thumbnail img");
@@ -297,6 +297,23 @@ module.exports = function (app) {
                 songs.push({ artistName: artistName, artistUrl: artistUrl, albumUrl: url, albumName: name, thumbnail: 'http://www.legalsounds.com' + imageUrl });
             });
             callback(songs)
+        });
+    }
+
+    function getArtists(url, callback) {
+        getUrl(url, function (data) {
+            var dom = createDom(data)
+            var md = select(dom, "div.contentWrapper div.item");
+            results = [];            
+            md.forEach(function (element) {                
+
+                var name = getText(element, "div.name a");
+                var url = getHref(element, "div.name a");
+
+                results.push({ artistName: name, artistUrl: url});
+            });
+            //console.log(results)
+            callback(results)
         });
     }
 

@@ -1,10 +1,18 @@
-div
-  a(href="/play?url=" + song.songUrl) play
-  |
-  a(href=song.songUrl)=song.songName
-  |
-  a(href=song.artistUrl)=song.artistName
-  |
-  a(href=song.albumUrl)=song.albumName
-  |
-  //img(src=  song.thumbnail)
+-if(song.songName)
+    div
+      a(href="/play?url=" + song.songUrl)=song.songName 
+      span by       
+      a(href=song.artistUrl)=song.artistName
+      span from
+      a(href=song.albumUrl)=song.albumName      
+      //img(src=  song.thumbnail)
+
+-else if (song.albumName)
+    div
+        a(href=song.artistUrl)=song.artistName
+        |
+        a(href=song.albumUrl)=song.albumName
+-else
+    div
+        a(href=song.artistUrl)=song.artistName
+

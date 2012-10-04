@@ -4,6 +4,4 @@ div=album.name
 ul
 each song in album.songs
   li
-    a(href="/play?url=" + song.url) play
-    |
-    a(href=song.url)=song.name
+    a(href="/play?url=" + song.url)=song.name
