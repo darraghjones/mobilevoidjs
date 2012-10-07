@@ -1,19 +1,13 @@
--if(song.songName)
-    div
-      a(href="/play?url=" + song.songUrl)=song.songName 
-      span by       
-      a(href=song.artistUrl)=song.artistName
-      span from
-      a(href=song.albumUrl)=song.albumName      
-      //img(src=  song.thumbnail)
-
--else if (song.albumName)
-    div
-        a(href=song.albumUrl)=song.albumName
-        span by
-        a(href=song.artistUrl)=song.artistName
+div
+  -if(song.songName)
+     a(href="/play?url=" + song.songUrl)=song.songName 
+     span off             
         
--else
-    div
-        a(href=song.artistUrl)=song.artistName
+  -if (song.albumName)
+     a(href=song.albumUrl)=song.albumName
+     span by        
+
+  a(href=song.artistUrl)=song.artistName
+  //img(src=  song.thumbnail)
+
 

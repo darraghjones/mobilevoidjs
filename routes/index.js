@@ -15,6 +15,12 @@ module.exports = function (app) {
         res.send(util.inspect(process.env, false, null      ));
     });
 
+    app.get('/clearCache', function(req, res) {
+        var blobService = azure.createBlobService();
+        blobService.deleteContainer('cache', function(err, result) {
+            res.send(result);
+        });
+    });
 
     app.get('/play', function (req, res) {
         res.render('play', {url: req.query['url'], layout: false});
@@ -98,18 +104,21 @@ module.exports = function (app) {
 
         if (blobService) {
             blobService.createContainerIfNotExists('cache', function(err, results) {
-                blobService.getBlobToText('cache', hash, function(err, results) {
-                    if (results) {
-                        console.log("blob storage cache hit: " + hash);
-                        callback(results);
+                blobService.getBlobToText('cache', hash, function(err, text, result, response) {
+                    if (text) {
+                        var ageInMinutes = (new Date() - new Date(result.lastModified)) / (60 * 1000)
+                        console.dir(ageInMinutes)
+                        if (ageInMinutes < 60) {
+                            console.log("blob storage cache hit: %s. %d minutes old.", hash, ageInMinutes);
+                            callback(text);
+                        }                        
                     }
-                    else {
-                        downloadUrl(url, function (data) {
-                            blobService.createBlockBlobFromText('cache', hash, data, function(err, results) {
-                                callback(data);
-                            });
-                        });                        
-                    }
+                    downloadUrl(url, function (data) {
+                        blobService.createBlockBlobFromText('cache', hash, data, function(err, results) {
+                            callback(data);
+                        });
+                    });                       
+                    
                 });                
             });
         }
