@@ -248,7 +248,7 @@ module.exports = function (app) {
 
     function getText(el, sel, defaultText){  
         try {
-            return select(el, sel)[0].children[0].raw;
+            return select(el, sel)[0].children[0].raw.trim();
         }            
         catch(err){
             //console.log(err)

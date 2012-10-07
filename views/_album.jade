@@ -1,11 +1,11 @@
 div
   -if(song.songName)
-     a(href="/play?url=" + song.songUrl)=song.songName 
-     span off             
+     a(href="/play?url=" + song.songUrl)=song.songName
+     span  off 
         
   -if (song.albumName)
      a(href=song.albumUrl)=song.albumName
-     span by        
+     span  by    
 
   a(href=song.artistUrl)=song.artistName
   //img(src=  song.thumbnail)
