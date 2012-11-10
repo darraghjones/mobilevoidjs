@@ -1,21 +1,22 @@
+extends layout
+block body
 
+  form(action="/search", method="get")
+    input(type="text", name="pattern")
+    input(type="submit", value="Search")
 
-form(action="/search", method="get")
-  input(type="text", name="pattern")
-  input(type="submit", value="Search")
-
-div
-  h1 Most downloaded songs
-  each song in songs
-    include _album
-div
-  h1 Most downloaded albums
-  each song in albums
-    include _album
-div
-  h1 Most downloaded artists
-  each song in artists
-    include _album
+  div
+    h1 Most downloaded songs
+    each song in songs
+      include _album    
+  div
+    h1 Most downloaded albums
+    each song in albums
+      include _album
+  div
+    h1 Most downloaded artists
+    each song in artists
+      include _album
 
 
 

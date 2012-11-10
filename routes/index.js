@@ -196,6 +196,7 @@ module.exports = function (app) {
             //var md = select(dom, "div.albumInfo div.name")[0].children[0].children[0];
             //i(md);
             //album.name = md.raw;
+            album.thumbnail = "http://legalsounds.com" + getImageSrc(select(dom, "div.albumInfo"), "div.thumbnail a img")
             album.songs = [];       
             var header = true;     
             select(dom, 'form table.content tr').forEach(function(el) {                

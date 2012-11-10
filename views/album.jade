@@ -1,7 +1,11 @@
-div Album
+extends layout
+block body
+  div Album
 
-div=album.name
-ul
-each song in album.songs
-  li
-    a(href="/play?url=" + song.url)=song.name
+  div=album.name
+  div.img
+    img(src=album.thumbnail)
+  ul
+  each song in album.songs
+    li
+      a(href="/play?url=" + song.url)=song.name

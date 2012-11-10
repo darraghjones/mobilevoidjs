@@ -1,17 +1,19 @@
-form(action="/powerSearch", method="get")
-  label(for="ar") Artist:
-  input(type="text", name="ar")
-  
-  label(for="a") Album:
-  input(type="text", name="a")
-  
-  label(for="s") Song:
-  input(type="text", name="s")
-  
-  input(type="submit", value="Power Search")  
-  
+extends layout
+block body
+  form(action="/powerSearch", method="get")
+    label(for="ar") Artist:
+    input(type="text", name="ar")
+    
+    label(for="a") Album:
+    input(type="text", name="a")
+    
+    label(for="s") Song:
+    input(type="text", name="s")
+    
+    input(type="submit", value="Power Search")  
+    
 
 
-h1 Search results
-each song in searchResults
-  include _album
+  h1 Search results
+  each song in searchResults
+    include _album

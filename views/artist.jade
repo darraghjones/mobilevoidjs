@@ -1,6 +1,8 @@
-div= artist.name
-ul
-each album in artist.albums
-  li
-    a(href=album.url)=album.name
+extends layout
+block body
+  div= artist.name
+  ul
+  each album in artist.albums
+    li
+      a(href=album.url)=album.name
   

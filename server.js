@@ -4,15 +4,14 @@
  */
 
 var express = require('express')
-
-var app = module.exports = express.createServer();
-
+var app = express();
+  
 // Configuration
 
 app.configure(function(){
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
-  app.set('view options', { pretty: true });
+  app.locals.pretty = true;
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(app.router);
@@ -30,5 +29,6 @@ app.configure('production', function(){
 // Routes
 require('./routes')(app);
 
-app.listen(process.env.port || 3000);
-console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
+var port = process.env.port || 3000;
+app.listen(port);	
+console.log("Express server listening on port %d in %s mode", port, app.settings.env);
