@@ -16,7 +16,7 @@
     "express"
   ],
   "dependencies": {
-    "express": "",
+    "express": "3.0.2",
     "jade": "",
     "htmlparser": "",
     "soupselect": "",
